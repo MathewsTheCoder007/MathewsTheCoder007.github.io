@@ -6,6 +6,10 @@
 		body {
 			margin : 0;
 		}
+		#cursor {
+			position : absolute;
+			width : 3%;
+		}
 	</style>
 	    <link rel="shortcut icon" type="image/png" href="quadBlock Logo.png">
 </head>
@@ -15,7 +19,14 @@
 	<script src = "perlin.js"></script>
 	<script src = "PointerLockControls.js"></script>
 	<script src = "stats.js"></script>
+	
+	<img src = "cursor.png" id = "cursor">
+	
  	<script type="text/javascript">
+	// Cursor
+ 		var cursor = document.getElementById("cursor");
+ 		cursor.style.left = ((0.5 * window.innerWidth) - (0.5 * cursor.width)).toString() + "px";
+ 		cursor.style.top = ((0.5 * window.innerHeight) - (0.5 * cursor.height)).toString() + "px";
 
  		var stats = new Stats();
  		stats.showPanel(0); // 0:fps, 1:ms, 2:mb, 3+:custom
@@ -912,6 +923,8 @@
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			camera.aspect = window.innerWidth / window.innerHeight;
 			camera.updateProjectionMatrix();
+			cursor.style.left = ((0.5 * window.innerWidth) - (0.5 * cursor.width)).toString() + "px";
+ 			cursor.style.top = ((0.5 * window.innerHeight) - (0.5 * cursor.height)).toString() + "px";
 		});
 
 		const raycaster = new THREE.Raycaster();
