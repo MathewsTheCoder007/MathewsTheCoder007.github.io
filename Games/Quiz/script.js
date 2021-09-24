@@ -90,7 +90,7 @@ const quizData = [
     {
         question: "Which is the biggest religion",
         a: "Islam",
-        b: "Cristianity",
+        b: "Christianity",
         c: "Hinduism",
         d: "Buddhism",
         correct: "b",
