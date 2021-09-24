@@ -69,7 +69,7 @@ const quizData = [
         b: "Mukesh Ambani",
         c: "Satoshi Nakamoto",
         d: "Jack Ma",
-        correct: "b",
+        correct: "d",
     },
     {
         question: "Who is founder of T-series",
