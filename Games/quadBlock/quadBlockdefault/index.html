@@ -136,7 +136,6 @@
 		];
 
 		var depth = 5; // keeps track of the depth of the world (in terms of blocks)
-		var minWorldY = -250; // the minimum y coordinate of a block
 		var blockBox = new THREE.BoxGeometry(5, 5, 5)
 		var instancedChunk = new THREE.InstancedMesh(blockBox, materialArray, renderDistance * renderDistance * chunkSize * chunkSize * depth);
 		var count = 0;
