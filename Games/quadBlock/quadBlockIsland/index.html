@@ -90,6 +90,7 @@
 		function Block(x, y, z, placed){
 			this.x = x;
 			this.y = y;
+			this.z = z;
 			this.placed = placed;
 		}
 
@@ -145,6 +146,7 @@
 				for(var x = i * chunkSize; x < (i * chunkSize) + chunkSize; x++){
 					for(var z = j * chunkSize; z < (j * chunkSize) + chunkSize; z++){
 						xoff = inc * x;
+						zoff = inc * z;
 						var v = Math.round(noise.perlin2(xoff, zoff) * amplitude / 5) * 5;
 						for(var d = 0; d < depth; d++){
 							if(v - (d * 5) < minWorldY){
@@ -181,15 +183,18 @@
 		var placedBlocks = [];
 		var chunkMap = [];
 		for(var x = 0; x < renderDistance; x++){
-			{
-				chunkMap.push({x : x});
+			for(var z = 0; z < renderDistance; z++){
+				chunkMap.push({x : x, z : z});
 			}
 		}
 
-		function identifyChunk(x, ){
+		function identifyChunk(x, z){
 			var lowestX = lowestXBlock();
+			var lowestZ = lowestZBlock();
 			var difX = x - lowestX;
+			var difZ = z - lowestZ;
 			var divX = Math.floor(difX / (chunkSize * 5));
+			var divZ = Math.floor(difZ / (chunkSize * 5));
 			var index = undefined;
 			for(var i = 0; i < chunkMap.length; i++){
 				if(chunkMap[i].x == divX && chunkMap[i].z == divZ){
@@ -231,38 +236,45 @@
 					var position = intersection[0].point; // object with x, y and z coords
 					var x = 0;
 					var y = 0;
+					var z = 0;
 					const inc = 2.5; 
 					switch(materialIndex){
 						case 0: // right
 							x = position.x + inc;
 							y = Math.round(position.y / 5) * 5;
+							z = Math.round(position.z / 5) * 5;
 							break;
 						case 1: // left
 							x = position.x - inc;
 							y = Math.round(position.y / 5) * 5;
+							z = Math.round(position.z / 5) * 5;
 							break;
 						case 2: // top
 							x = Math.round(position.x / 5) * 5;
 							y = position.y + inc;
+							z = Math.round(position.z / 5) * 5;
 							break;
 						case 3: // bottom
 							x = Math.round(position.x / 5) * 5;
 							y = position.y - inc;
+							z = Math.round(position.z / 5) * 5;
 							break;
 						case 4: // front
 							x = Math.round(position.x / 5) * 5;
 							y = Math.round(position.y / 5) * 5;
+							z = position.z + inc;
 							break;
 						case 5: // back
 							x = Math.round(position.x / 5) * 5;
 							y = Math.round(position.y / 5) * 5;
+							z = position.z - inc;
 							break;
 					}
 					y = Math.round(y); // sometimes, y is for some reason e.g 4.999999999999
 					if(y > minWorldY){
-						var b = {x : x, y : y};
+						var b = {x : x, y : y, z : z};
 						if(!intersect(b.x, b.y, b.z, 5, 5, 5, player.x, player.y, player.z, player.w, player.h, player.d)){
-							chunks[identifyChunk(x)].push(new Block(x, y, true));
+							chunks[identifyChunk(x, z)].push(new Block(x, y, z, true));
 							placedBlocks.push(b);
 
 							scene.remove(instancedChunk);
@@ -325,26 +337,32 @@
 						case 0: // right
 							x = position.x - inc;
 							y = Math.round(position.y / 5) * 5;
+							z = Math.round(position.z / 5) * 5;
 							break;
 						case 1: // left
 							x = position.x + inc;
 							y = Math.round(position.y / 5) * 5;
+							z = Math.round(position.z / 5) * 5;
 							break;
 						case 2: // top
 							x = Math.round(position.x / 5) * 5;
 							y = position.y - inc;
+							z = Math.round(position.z / 5) * 5;
 							break;
 						case 3: // bottom
 							x = Math.round(position.x / 5) * 5;
 							y = position.y + inc;
+							z = Math.round(position.z / 5) * 5;
 							break;
 						case 4: // front
 							x = Math.round(position.x / 5) * 5;
 							y = Math.round(position.y / 5) * 5;
+							z = position.z - inc;
 							break;
 						case 5: // back
 							x = Math.round(position.x / 5) * 5;
 							y = Math.round(position.y / 5) * 5;
+							z = position.z + inc;
 							break;
 					}
 					// Find block with those x, y, z positions
