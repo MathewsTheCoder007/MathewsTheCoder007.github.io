@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>quadBlock</title>
+	<title>quadBlock ScaryEdition</title>
 	<style type="text/css">
 		body {
 			margin : 0;
@@ -11,7 +11,7 @@
 			width : 3%;
 		}
 	</style>
-	<link rel="shortcut icon" type="image/png" href="quadBlock Logo.png">
+	    <link rel="shortcut icon" type="image/png" href="quadBlock Logo.png">
 </head>
 <body>
 
@@ -19,10 +19,12 @@
 	<script src = "perlin.js"></script>
 	<script src = "PointerLockControls.js"></script>
 	<script src = "stats.js"></script>
+	
 	<img src = "cursor1.png" id = "cursor">
+	
  	<script type="text/javascript">
-	 // Cursor
-	 var cursor = document.getElementById("cursor");
+	// Cursor
+ 		var cursor = document.getElementById("cursor");
  		cursor.style.left = ((0.5 * window.innerWidth) - (0.5 * cursor.width)).toString() + "px";
  		cursor.style.top = ((0.5 * window.innerHeight) - (0.5 * cursor.height)).toString() + "px";
 
@@ -136,6 +138,7 @@
 		];
 
 		var depth = 5; // keeps track of the depth of the world (in terms of blocks)
+		var minWorldY = -250; // the minimum y coordinate of a block
 		var blockBox = new THREE.BoxGeometry(5, 5, 5)
 		var instancedChunk = new THREE.InstancedMesh(blockBox, materialArray, renderDistance * renderDistance * chunkSize * chunkSize * depth);
 		var count = 0;
