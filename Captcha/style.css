@@ -17,7 +17,37 @@
 }
 #refresh{
     float: left;
-    background-color: #2c31cf;
+    background-color: #ffff;
     height: 82px;
     border-radius: 5px 0 0 5px;
+}
+#refresh img{
+    margin-top: 20px;
+    cursor: pointer;
+}
+#textinput{
+    width: 170px;
+    height: 70px;
+    font-size: 37px;
+    background-color: #252521;
+    border: none;
+    margin-left: 10px;
+    border-radius: 5px;
+    padding: 5px;
+    color: #d58a1e;
+}
+.contain button{
+    padding: 8px 20px;
+    height: 35px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-top: 25px;
+    background-color: #764d11;
+    color: #ced4f0;
+    transition: .5s;
+}
+.contain button:hover{
+    background-color: #976216;
 }
