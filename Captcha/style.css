@@ -1,0 +1,23 @@
+.contain{
+    display: flex;
+    justify-content: center;
+    margin-top: 20%;
+}
+#capt{
+    width: 170px;
+    height: 72px;
+    font-size: 37px;
+    background-color: #2c31cf;
+    padding: 5px;
+    border: none;
+    letter-spacing: 1px;
+    float: left;
+    color: #e9e91d;
+    border-radius: 5px 0 0 5px;
+}
+#refresh{
+    float: left;
+    background-color: #2c31cf;
+    height: 82px;
+    border-radius: 5px 0 0 5px;
+}
