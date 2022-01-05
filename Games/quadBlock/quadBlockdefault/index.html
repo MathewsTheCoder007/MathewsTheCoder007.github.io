@@ -137,7 +137,7 @@
 			new THREE.MeshBasicMaterial({map : loader.load("texture/side3.jpg")}),
 		];
 
-		var depth = 50; // keeps track of the depth of the world (in terms of blocks)
+		var depth = 80; // keeps track of the depth of the world (in terms of blocks)
 		var minWorldY = -250; // the minimum y coordinate of a block
 		var blockBox = new THREE.BoxGeometry(5, 5, 5)
 		var instancedChunk = new THREE.InstancedMesh(blockBox, materialArray, renderDistance * renderDistance * chunkSize * chunkSize * depth);
