@@ -8,17 +8,17 @@ const btn = document.querySelector('.talk');
         const Bored = ["Watch Some Youtube "]
         const Thnx = ["You are Welcome "]
         const protocol = ["Activating Protocol"]
-        const User = ["You ,Mathews Antony"]
         const line = ["For You Always "]
         const ready = ["I am online and Ready "]
         const todolist = [" you have Nothing."]
-        const you = ["You are My Owner,Mathews Antony"]
+        const you = ["My Owner is Mathews Antony"]
         const Tragedy = ["I get that a Lot,"]
         const hello = ["Hello "]
         const Reply = ["Here You Go  "]
         const comparison = ["You Underestimate Me "]
         const Bye = ["Bye "]
         const Diagnostics = ["Running diagnostics "]
+	const Creator = ["My creator and God is Mathews Antony"]
          
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition =  new SpeechRecognition();
@@ -60,6 +60,11 @@ const btn = document.querySelector('.talk');
 			Me[Math.floor(Math.random() * Me.length)];
 		speech.text = finalText;
 	}
+	if (message.includes('who is your owner')) {
+		const finalText =
+			Bored[Math.floor(Math.random() * you.length)];
+		speech.text = finalText;
+	}
 	if (message.includes('I am bored')) {
 		const finalText =
 			Bored[Math.floor(Math.random() * Bored.length)];
@@ -75,9 +80,9 @@ const btn = document.querySelector('.talk');
 			protocol[Math.floor(Math.random() * protocol.length)];
 		speech.text = finalText;
 	}
-	if (message.includes('who is your user')) {
+	if (message.includes('who is your creator')) {
 		const finalText =
-			User[Math.floor(Math.random() * User.length)];
+			User[Math.floor(Math.random() * Creator.length)];
 		speech.text = finalText;
 	}
 	if (message.includes('are you there')) {
