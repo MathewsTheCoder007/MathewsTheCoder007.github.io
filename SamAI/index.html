@@ -19,12 +19,16 @@
         }
     </script>
 </head>
-<body>
+<body style="font-family: monospace; font-weight: 800;">
+    <button type="button" class="date" onclick="document.getElementById('display').innerHTML = Date()">
+        Date And Time</button>
+        <p id="display" style="font-weight: 800;"> </p>
+        <br><br><br>
     <marquee><h1>Hello! I am Sam<sup>TM</sup></h1></marquee>
     <center><button class="talk">Talk</button>
     <h3 class="content"></h3>
     <form action="https://www.google.com/search?q=" method="GET">
-        <label for="Speech Recognition">Speech Recognition</label>
+        <label for="Speech Recognition" style="font-size: large;">Speech Recognition</label>
         <input type="search" name="query" onclick="record()" id="speechToText" placeholder="Speak Something">
     </form>
 </center>
