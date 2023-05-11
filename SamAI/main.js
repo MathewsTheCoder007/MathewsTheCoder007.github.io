@@ -62,7 +62,7 @@ const btn = document.querySelector('.talk');
 	}
 	if (message.includes('who is your owner')) {
 		const finalText =
-			Bored[Math.floor(Math.random() * you.length)];
+			you[Math.floor(Math.random() * you.length)];
 		speech.text = finalText;
 	}
 	if (message.includes('I am bored')) {
@@ -82,7 +82,7 @@ const btn = document.querySelector('.talk');
 	}
 	if (message.includes('who is your creator')) {
 		const finalText =
-			User[Math.floor(Math.random() * Creator.length)];
+			Creator[Math.floor(Math.random() * Creator.length)];
 		speech.text = finalText;
 	}
 	if (message.includes('are you there')) {
