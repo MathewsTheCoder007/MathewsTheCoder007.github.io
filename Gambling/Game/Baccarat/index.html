@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baccarat Game</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Welcome to Baccarat!</h1>
+    <p>Current Balance: $<span id="balance">1000</span></p>
+    <label for="betAmount">Enter Bet Amount:</label>
+    <input type="number" id="betAmount" min="1">
+    <button onclick="playBaccarat()">Place Bet & Play</button>
+    <div id="game-results">
+        <!-- Game results will be displayed here -->
+    </div>
+
+    <script>
+        let balance = 1000; // Initial balance
+
+        // Define card values
+        const cardValues = {
+            '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 0, 'J': 0, 'Q': 0, 'K': 0, 'A': 1
+        };
+
+        // Function to draw a card
+        function drawCard() {
+            const cards = Object.keys(cardValues);
+            return cards[Math.floor(Math.random() * cards.length)];
+        }
+
+        // Function to calculate the total value of a hand
+        function calculateHand(hand) {
+            return hand.reduce((total, card) => total + cardValues[card], 0) % 10;
+        }
+
+        // Function to play a round of baccarat
+        function playBaccarat() {
+            const betAmount = parseInt(document.getElementById('betAmount').value);
+            if (isNaN(betAmount) || betAmount <= 0) {
+                alert("Please enter a valid bet amount.");
+                return;
+            }
+            if (betAmount > balance) {
+                alert("Insufficient balance. Please enter a lower bet amount.");
+                return;
+            }
+
+            const playerHand = [drawCard(), drawCard()];
+            const playerTotal = calculateHand(playerHand);
+            const playerResult = "Player's hand: " + playerHand.join(', ') + " Total: " + playerTotal;
+
+            const bankerHand = [drawCard(), drawCard()];
+            const bankerTotal = calculateHand(bankerHand);
+            const bankerResult = "Banker's hand: " + bankerHand[0] + ", Total: ?, (" + bankerHand[1] + ")";
+
+            // Determine the winner
+            let result;
+            if (playerTotal > bankerTotal) {
+                result = "Player wins!";
+                balance += betAmount;
+            } else if (playerTotal < bankerTotal) {
+                result = "Banker wins!";
+                balance -= betAmount;
+            } else {
+                result = "It's a tie!";
+            }
+
+            // Update balance
+            document.getElementById('balance').textContent = balance;
+
+            // Display results
+            document.getElementById('game-results').innerHTML = "<p>" + playerResult + "</p><p>" + bankerResult + "</p><p>" + result + "</p>";
+        }
+    </script>
+</body>
+</html>
