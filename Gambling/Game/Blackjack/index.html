@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack Game</title>
+</head>
+<body>
+    <h1>Blackjack Game</h1>
+    <p>Money: $<span id="money">1000</span></p>
+    <input type="number" id="bet" placeholder="Enter Bet Amount">
+    <button onclick="startGame()">Start Game</button>
+    <div id="player-hand"></div>
+    <div id="dealer-hand"></div>
+    <script>
+        // JavaScript code goes here
+
+        let money = 1000; // Initial money
+
+        // Function to create and shuffle a deck of cards
+        function createDeck() {
+            const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
+            const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'];
+            const deck = [];
+            for (const suit of suits) {
+                for (const value of values) {
+                    deck.push(value + ' of ' + suit);
+                }
+            }
+            return shuffle(deck);
+        }
+
+        // Function to shuffle the deck
+        function shuffle(deck) {
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+            return deck;
+        }
+
+        // Function to calculate the value of a hand
+        function calculateHandValue(hand) {
+            let value = 0;
+            let numAces = 0;
+            for (const card of hand) {
+                const cardValue = card.split(' ')[0];
+                if (['Jack', 'Queen', 'King'].includes(cardValue)) {
+                    value += 10;
+                } else if (cardValue === 'Ace') {
+                    numAces++;
+                    value += 11;
+                } else {
+                    value += parseInt(cardValue);
+                }
+            }
+            // Adjust for aces
+            while (value > 21 && numAces > 0) {
+                value -= 10;
+                numAces--;
+            }
+            return value;
+        }
+
+        function startGame() {
+            const bet = parseInt(document.getElementById('bet').value);
+            if (isNaN(bet) || bet <= 0 || bet > money) {
+                alert('Invalid bet amount!');
+                return;
+            }
+            money -= bet;
+            document.getElementById('money').textContent = money;
+            
+            const deck = createDeck();
+            const playerHand = [deck.pop(), deck.pop()];
+            const dealerHand = [deck.pop(), deck.pop()];
+
+            document.getElementById('player-hand').innerHTML = '<h2>Player\'s Hand:</h2>' + playerHand.join(', ') + '<br>Value: ' + calculateHandValue(playerHand);
+            document.getElementById('dealer-hand').innerHTML = '<h2>Dealer\'s Hand:</h2>' + dealerHand.join(', ') + '<br>Value: ' + calculateHandValue(dealerHand);
+
+            // Compare player's hand value with dealer's hand value
+            const playerValue = calculateHandValue(playerHand);
+            const dealerValue = calculateHandValue(dealerHand);
+
+            let outcome;
+            if (playerValue > dealerValue && playerValue <= 21) {
+                money += bet * 2; // Player wins, double the bet
+                outcome = 'Player wins!';
+            } else if (playerValue < dealerValue || playerValue > 21) {
+                // Player loses
+                outcome = 'Player loses!';
+            } else {
+                // Tie, return the bet
+                money += bet;
+                outcome = 'It\'s a tie!';
+            }
+
+            if (playerValue > dealerValue && playerValue <= 21) {
+                money += bet * 10; // Player wins, double the bet
+                document.getElementById('money').textContent = money;
+                alert('You win!');
+            } else if(playerValue < dealerValue || playerValue > 21){
+                alert('You lose!');
+            }
+            else {
+            // Tie, return the bet
+            money += bet;
+            document.getElementById('money').textContent = money;
+            alert('It\'s a tie!');
+        }
+        console.log('Player\'s hand:', playerHand.join(', '), 'Value:', playerValue);
+            console.log('Dealer\'s hand:', dealerHand.join(', '), 'Value:', dealerValue);
+            console.log(outcome);
+            console.log('Money:', money);
+
+        }
+    </script>
+</body>
+</html>
