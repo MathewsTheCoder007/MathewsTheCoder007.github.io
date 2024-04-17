@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Game</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="player-info">
+            <p>Player Name: <span id="player-name">Player 1</span></p>
+            <p>Player Balance: $<span id="player-balance">100</span></p>
+            <input type="number" id="bet-amount" placeholder="Enter bet amount">
+        </div>
+        <div id="game">
+            <div id="player-hand">
+                <h3>Player Hand</h3>
+                <div id="player-cards"></div>
+            </div>
+            <div id="dealer-hand">
+                <h3>Dealer Hand</h3>
+                <div id="dealer-cards"></div>
+            </div>
+            <div id="result"></div>
+        </div>
+        <div id="controls">
+            <button id="deal-button" onclick="deal()">Deal</button>
+            <button id="fold-button" onclick="fold()">Fold</button>
+            <button id="reset-button" onclick="reset()">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        // Deck of cards
+        const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
+        const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
+        let deck = [];
+        let playerHand = [];
+        let dealerHand = [];
+        let playerBalance = 100;
+        let betAmount = 0; // Initialize betAmount
+
+        // Function to create a deck of cards
+        function createDeck() {
+            for (let suit of suits) {
+                for (let value of values) {
+                    deck.push({suit, value});
+                }
+            }
+        }
+
+        // Function to shuffle the deck
+        function shuffleDeck() {
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+        }
+
+        // Function to deal cards to players
+        function deal() {
+            if (deck.length < 4) {
+                alert("Not enough cards in the deck. Resetting...");
+                reset();
+                return;
+            }
+            
+            betAmount = parseInt(document.getElementById('bet-amount').value); // Assign betAmount
+            if (!isNaN(betAmount) && betAmount > 0 && betAmount <= playerBalance) {
+                playerBalance -= betAmount;
+                displayPlayerBalance();
+            } else {
+                alert("Invalid bet amount!");
+                return;
+            }
+
+            playerHand.push(deck.pop());
+            dealerHand.push(deck.pop());
+            playerHand.push(deck.pop());
+            dealerHand.push(deck.pop());
+
+            displayCards();
+
+            // Check for winner after dealing
+            checkWinner();
+        }
+
+        // Function to display cards on the UI
+        function displayCards() {
+            const playerCardsDiv = document.getElementById('player-cards');
+            const dealerCardsDiv = document.getElementById('dealer-cards');
+            playerCardsDiv.innerHTML = '';
+            dealerCardsDiv.innerHTML = '';
+
+            for (let card of playerHand) {
+                const cardDiv = document.createElement('div');
+                cardDiv.innerText = `${card.value} of ${card.suit}`;
+                playerCardsDiv.appendChild(cardDiv);
+            }
+
+            for (let card of dealerHand) {
+                const cardDiv = document.createElement('div');
+                cardDiv.innerText = `${card.value} of ${card.suit}`;
+                dealerCardsDiv.appendChild(cardDiv);
+            }
+        }
+
+        // Function to handle folding
+        function fold() {
+            // Placeholder function
+            console.log("Folded!");
+        }
+
+        // Function to display player balance on the UI
+        function displayPlayerBalance() {
+            const balanceSpan = document.getElementById('player-balance');
+            balanceSpan.textContent = playerBalance;
+        }
+
+        // Function to check the winner
+        function checkWinner() {
+            const playerValue = getHandValue(playerHand);
+            const dealerValue = getHandValue(dealerHand);
+
+            if (playerValue > dealerValue) {
+                displayResult("Player wins!");
+                playerBalance += betAmount * 2; // Player wins the bet
+            } else if (playerValue < dealerValue) {
+                displayResult("Dealer wins!");
+            } else {
+                displayResult("It's a tie!");
+                playerBalance += betAmount; // Return the bet to the player
+            }
+
+            displayPlayerBalance();
+        }
+
+        // Function to display result on the UI
+        function displayResult(result) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = result;
+        }
+
+        // Function to reset the game
+        function reset() {
+            deck = [];
+            playerHand = [];
+            dealerHand = [];
+            createDeck();
+            shuffleDeck();
+            displayPlayerBalance();
+            displayResult('');
+            displayCards();
+        }
+
+        // Function to get the value of the hand (for simplicity, just the sum of card values)
+        function getHandValue(hand) {
+            let value = 0;
+            for (let card of hand) {
+                if (card.value === 'A') {
+                    value += 11; // Ace is considered as 11 for simplicity
+                } else if (['J', 'Q', 'K'].includes(card.value)) {
+                    value += 10;
+                } else {
+                    value += parseInt(card.value);
+                }
+            }
+            return value;
+        }
+
+        // Initial setup
+        createDeck();
+        shuffleDeck();
+        displayPlayerBalance();
+    </script>
+</body>
+</html>
