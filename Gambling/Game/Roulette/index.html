@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roulette Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Roulette Game!</h1>
+    <button id="output">Spin the wheel</button>
+    <button id="players">Add Players</button>
+    <button id="bet-buttons">Bet Buttons</button>
+
+    <script>
+        const wheelNumbers = {
+            0: 'green',
+            1: 'red',
+            2: 'black',
+            3: 'red',
+            4: 'black',
+            5: 'red',
+            6: 'black',
+            7: 'red',
+            8: 'black',
+            9: 'red',
+            10: 'black',
+            11: 'black',
+            12: 'red',
+            13: 'black',
+            14: 'red',
+            15: 'black',
+            16: 'red',
+            17: 'black',
+            18: 'red',
+            19: 'red',
+            20: 'black',
+            21: 'red',
+            22: 'black',
+            23: 'red',
+            24: 'black',
+            25: 'red',
+            26: 'black',
+            27: 'red',
+            28: 'black',
+            29: 'black',
+            30: 'red',
+            31: 'black',
+            32: 'red',
+            33: 'black',
+            34: 'red',
+            35: 'black',
+            36: 'red'
+        };
+
+        let players = [];
+        const initialBalance = 1000; // Initial balance for each player
+
+        function spinWheel() {
+            const number = Math.floor(Math.random() * 37);
+            const color = wheelNumbers[number];
+            return { number, color };
+        }
+
+        function main() {
+            const outputButton = document.getElementById('output');
+            const playersButton = document.getElementById('players');
+            const betButtonsButton = document.getElementById('bet-buttons');
+            outputButton.textContent = 'Spin the wheel';
+            playersButton.textContent = 'Add Players';
+            betButtonsButton.textContent = 'Bet Buttons';
+
+            // Event listeners
+            outputButton.addEventListener('click', () => {
+                // Logic for spinning the wheel
+                const { number, color } = spinWheel();
+                alert(`The winning number is ${number} (${color})!`);
+                // Logic to update balances
+                updateBalances();
+            });
+
+            playersButton.addEventListener('click', () => {
+                const numPlayers = prompt('Enter the number of players:');
+                for (let i = 1; i <= numPlayers; i++) {
+                    const playerName = prompt(`Enter the name of player ${i}:`);
+                    //Credit Limit =1000000 and equal to the balance of player
+                    const balance = initialBalance;
+                    const creditLimit = Math.max(balance, 1000000);
+                    players.push({ name: playerName, balance: initialBalance, debt: 0, creditLimit: creditLimit });
+                }
+                alert(`${numPlayers} players added!`);
+                // Logic to display players and their balances
+                updateBalances();
+            });
+
+            betButtonsButton.addEventListener('click', () => {
+                const color = prompt('Enter the color to bet on (red, black, green):');
+                if (color !== 'red' && color !== 'black' && color !== 'green') {
+                    alert('Invalid color!');
+                    return;
+                }
+                const playerName = prompt('Enter your name:');
+                placeBet(color, playerName);
+            });
+        }
+
+        function placeBet(color, playerName) {
+            const player = players.find(p => p.name === playerName);
+            if (!player) {
+                alert('Player not found!');
+                return;
+            }
+            const betAmount = parseFloat(prompt('Enter the amount you want to bet:'));
+            if (isNaN(betAmount) || betAmount <= 0 || betAmount > player.creditLimit) {
+                alert('Invalid bet amount or exceeds credit limit!');
+                return;
+            }
+            player.balance -= betAmount;
+
+            const { number, color: winningColor } = spinWheel();
+            if (winningColor === color) {
+                player.balance += betAmount * 2;
+                alert(`Congratulations! You won $${betAmount * 2} by betting on ${color}. The winning number is ${number}. Your current balance is $${player.balance}.`);
+                if (winningColor === 'green') {
+                    player.balance += betAmount * 4;
+                    alert(`Congratulations! You won $${betAmount * 4} by betting on ${color}. The winning number is ${number}. Your current balance is $${player.balance}.`);
+                }
+            } else {
+                player.debt += betAmount;
+                alert(`Sorry, you lost $${betAmount}. The winning number is ${number}, which is ${winningColor}. Your current balance is $${player.balance}.`);
+            }
+            updateBalances();
+        }
+
+        function updateBalances() {
+            const playersDiv = document.getElementById('players');
+            playersDiv.innerHTML = '';
+            players.forEach(player => {
+                const playerDiv = document.createElement('div');
+                playerDiv.textContent = `${player.name}: $${player.balance}, Debt: $${player.debt}`;
+                playersDiv.appendChild(playerDiv);
+            });
+        }
+
+        main();
+    </script>
+</body>
+</html>
