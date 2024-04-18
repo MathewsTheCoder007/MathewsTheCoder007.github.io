@@ -63,57 +63,46 @@
         }
 
         function startGame() {
-            const bet = parseInt(document.getElementById('bet').value);
-            if (isNaN(bet) || bet <= 0 || bet > money) {
-                alert('Invalid bet amount!');
-                return;
-            }
-            money -= bet;
-            document.getElementById('money').textContent = money;
-            
-            const deck = createDeck();
-            const playerHand = [deck.pop(), deck.pop()];
-            const dealerHand = [deck.pop(), deck.pop()];
+    const bet = parseInt(document.getElementById('bet').value);
+    if (isNaN(bet) || bet <= 0 || bet > money) {
+        alert('Invalid bet amount!');
+        return;
+    }
+    money -= bet;
+    document.getElementById('money').textContent = money;
+    
+    const deck = createDeck();
+    const playerHand = [deck.pop(), deck.pop()];
+    const dealerHand = [deck.pop(), deck.pop()];
 
-            document.getElementById('player-hand').innerHTML = '<h2>Player\'s Hand:</h2>' + playerHand.join(', ') + '<br>Value: ' + calculateHandValue(playerHand);
-            document.getElementById('dealer-hand').innerHTML = '<h2>Dealer\'s Hand:</h2>' + dealerHand.join(', ') + '<br>Value: ' + calculateHandValue(dealerHand);
+    // Show only one of the dealer's cards
+    document.getElementById('player-hand').innerHTML = '<h2>Player\'s Hand:</h2>' + playerHand.join(', ') + '<br>Value: ' + calculateHandValue(playerHand);
+    document.getElementById('dealer-hand').innerHTML = '<h2>Dealer\'s Hand:</h2>' + dealerHand[0] + ', ?' + '<br>Value: ' + calculateHandValue([dealerHand[0]]);
 
-            // Compare player's hand value with dealer's hand value
-            const playerValue = calculateHandValue(playerHand);
-            const dealerValue = calculateHandValue(dealerHand);
+    // Dealer wins ties
+    const playerValue = calculateHandValue(playerHand);
+    const dealerValue = calculateHandValue(dealerHand);
 
-            let outcome;
-            if (playerValue > dealerValue && playerValue <= 21) {
-                money += bet * 2; // Player wins, double the bet
-                outcome = 'Player wins!';
-            } else if (playerValue < dealerValue || playerValue > 21) {
-                // Player loses
-                outcome = 'Player loses!';
-            } else {
-                // Tie, return the bet
-                money += bet;
-                outcome = 'It\'s a tie!';
-            }
+    let outcome;
+    if (playerValue > dealerValue && playerValue <= 21) {
+        money += bet * 5; // Player wins, 1.5 times the bet
+        outcome = 'Player wins!';
+    } else if (playerValue < dealerValue || playerValue > 21) {
+        // Player loses
+        outcome = 'Player loses!';
+    } else {
+        // Tie, dealer wins
+        outcome = 'Dealer wins!';
+    }
 
-            if (playerValue > dealerValue && playerValue <= 21) {
-                money += bet * 10; // Player wins, double the bet
-                document.getElementById('money').textContent = money;
-                alert('You win!');
-            } else if(playerValue < dealerValue || playerValue > 21){
-                alert('You lose!');
-            }
-            else {
-            // Tie, return the bet
-            money += bet;
-            document.getElementById('money').textContent = money;
-            alert('It\'s a tie!');
-        }
-        console.log('Player\'s hand:', playerHand.join(', '), 'Value:', playerValue);
-            console.log('Dealer\'s hand:', dealerHand.join(', '), 'Value:', dealerValue);
-            console.log(outcome);
-            console.log('Money:', money);
+    document.getElementById('money').textContent = money;
+    alert(outcome);
 
-        }
+    console.log('Player\'s hand:', playerHand.join(', '), 'Value:', playerValue);
+    console.log('Dealer\'s hand:', dealerHand.join(', '), 'Value:', dealerValue);
+    console.log(outcome);
+    console.log('Money:', money);
+}
     </script>
 </body>
 </html>
