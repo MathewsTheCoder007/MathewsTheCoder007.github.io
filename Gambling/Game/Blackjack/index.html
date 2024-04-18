@@ -62,13 +62,13 @@
             return value;
         }
 
-        function startGame() {
+ function startGame() {
     const bet = parseInt(document.getElementById('bet').value);
     if (isNaN(bet) || bet <= 0 || bet > money) {
         alert('Invalid bet amount!');
         return;
     }
-    money -= bet;
+    money -= bet; // Set bet to be  times
     document.getElementById('money').textContent = money;
     
     const deck = createDeck();
@@ -85,7 +85,7 @@
 
     let outcome;
     if (playerValue > dealerValue && playerValue <= 21) {
-        money += bet * 5; // Player wins, 1.5 times the bet
+        money += (bet * 5); // Player wins, 5 times the bet
         outcome = 'Player wins!';
     } else if (playerValue < dealerValue || playerValue > 21) {
         // Player loses
